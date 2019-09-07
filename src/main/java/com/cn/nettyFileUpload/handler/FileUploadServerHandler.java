@@ -13,7 +13,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
 	private int byteRead;
     private volatile int start = 0;
-    private String file_dir = "D:\\temp";
+    private String file_dir = "/tmp";
     private Logger log= Logger.getLogger(FileUploadServerHandler.class);
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -34,6 +34,7 @@ public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
     
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+
         if (msg instanceof FileUploadFile) {
             FileUploadFile ef = (FileUploadFile) msg;
             byte[] bytes = ef.getBytes();
@@ -54,12 +55,13 @@ public class FileUploadServerHandler extends ChannelInboundHandlerAdapter {
                 	channelInactive(ctx);
                 }
             } else {
-            	//System.out.println("文件接收完成");
-            	//ctx.flush(); 
+            	System.out.println("文件接收完成");
+            	ctx.flush();
                 ctx.close();
             }
             
         }
+
     }
 
     @Override

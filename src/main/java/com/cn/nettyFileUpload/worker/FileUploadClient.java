@@ -58,6 +58,8 @@ public class FileUploadClient {
 	}
 
 	public static void main(String[] args) {
+		long startTime  = System.currentTimeMillis();
+		long size = 0;
 		int port = FILE_PORT;
 		if (args != null && args.length > 0) {
 			try {
@@ -67,25 +69,34 @@ public class FileUploadClient {
 			}
 		}
 		try {
-			/*FileUploadFile uploadFile = new FileUploadFile();
-			File file = new File("D:\\file");// d:/source.rar,D:/2014work/apache-maven-3.5.0-bin.tar.gz
+
+
+			FileUploadFile uploadFile = new FileUploadFile();
+			String pathName = "/home/eric/Downloads/download/OS/elementaryos-5.0-stable.20181016.iso";
+			File file = new File(pathName);// 待上传文件
 			String fileMd5 = file.getName();// 文件名
 			uploadFile.setFile(file);
 			uploadFile.setFile_md5(fileMd5);
 			uploadFile.setStartPos(0);// 文件开始位置
-*/			
+			size = file.length()/1024/1024;//MB
+
+
 			FileMonitor monitor = new FileMonitor(1000);
 			 
-			monitor.addFile(new File("D:\\file"));
+			monitor.addFile(new File("/home/eric/backup.sh"));//这个不知道有啥用
 			
 			monitor.addListener(new FileListenerImpl());
 	 
-			while (!false)
-			;
-//			new FileUploadClient().connect(port, "127.0.0.1", uploadFile);
+//			while (!false)
+//			;
+			new FileUploadClient().connect(port, "127.0.0.1", uploadFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		long endTime = System.currentTimeMillis();
+		System.out.printf("文件大小%sMB",size);
+		long tatolTime =(endTime-startTime)/1000;
+		System.out.printf("\ttotal time : %s s, speed : %s Mb/s",tatolTime,size/tatolTime);
 	}
 
 	public static final int FILE_PORT = 9991;
